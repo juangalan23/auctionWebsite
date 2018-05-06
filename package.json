@@ -1,0 +1,38 @@
+{
+  "name": "auctionwebsite",
+  "version": "1.0.0",
+  "description": "auction website coding challenge for Ed Microlearning",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "react-dev": "webpack -d --watch",
+    "server-dev": "nodemon server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juangalan23/auctionWebsite.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/juangalan23/auctionWebsite/issues"
+  },
+  "homepage": "https://github.com/juangalan23/auctionWebsite#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "express": "^4.16.3",
+    "material-ui": "^1.0.0-beta.45",
+    "mongoose": "^5.0.17",
+    "nodemon": "^1.17.4",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "webpack": "^2.2.1"
+  }
+}
