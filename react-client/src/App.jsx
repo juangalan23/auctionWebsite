@@ -14,9 +14,6 @@ class App extends React.Component {
         return (
             <div>
                 <h1> yooooo </h1>
-                <Button variant="raised" color="primary">
-                    Hello World
-                    </Button>
             </div>
 
         )
