@@ -26,6 +26,8 @@ const itemSchema = mongoose.Schema({
     latest_bid_id: String,
     latest_bid: Number,
     latest_bidder: String,
+    latest_bidder_ID: String,
+    soldTo: String,
     bids: [bidSchema]
   });
 
@@ -92,6 +94,7 @@ const submitNewBid =  (bidData, callback) => {
         item.latest_bid_id = newBid._id;
         item.latest_bid = newBid.bid_price;
         item.latest_bidder = newBid.user_name;
+        item.latest_bidder_ID = newBid.user_id;
         item.bids.push(newBid)
         item.save((err, updatedItem)=> {
             if(err) {
@@ -105,8 +108,9 @@ const submitNewBid =  (bidData, callback) => {
 
 const checkUser = (userInfo, callback) => {
     User.findOne({'name': userInfo.username, 'password': userInfo.password},(err, res)=>{
-        if(err) console.log('err finding user')
-        else {
+        if(err) {
+            console.log('err finding user')
+        } else {
             if(res) {
                 userInfo._id = res._id
                 callback(userInfo)
@@ -117,6 +121,22 @@ const checkUser = (userInfo, callback) => {
     })
 }
 
+const updateSoldItem = (soldItemInfo, callback) => {
+    if(soldItemInfo) {
+        Item.findById(soldItemInfo.itemID, (err, item) => {
+            item.soldTo = soldItemInfo.username;
+            item.latest_bidder_id = soldItemInfo.userID;
+            item.save((err, updatedItem)=> {
+                if(err) {
+                    console.log('err in updating sold item ',err) 
+                } else {
+                    callback(updatedItem)
+                }
+            })
+        })
+    }
+}
+
 module.exports = {
     insertItemToDB,
     insertMultipleItemsToDB,
@@ -124,5 +144,6 @@ module.exports = {
     retrieveAllItems,
     retrieveAllUsers,
     submitNewBid,
-    checkUser
+    checkUser,
+    updateSoldItem
 };

@@ -19,7 +19,9 @@ class App extends React.Component {
         this.submitNewBid = this.submitNewBid.bind(this);
         this.verifyUser = this.verifyUser.bind(this);
         this.logout = this.logout.bind(this);
+        this.updateSoldItem = this.updateSoldItem.bind(this);
     }
+
     componentDidMount() {
         this.retrieveAllItems()
         if( typeof(localStorage.getItem('auth')) ==='string' ) {
@@ -29,22 +31,23 @@ class App extends React.Component {
             })
         }
     }
+
     retrieveAllItems() {
         axios.get('/allItems')
         .then((data)=> {
             this.setState({
                 items: data.data
-            }, ()=>{
-                console.log('new state ', this.state)
             })
         })
     }
+
     submitNewBid(newBid) {
         axios.post('/newBid', newBid)
         .then((res) => {
             this.retrieveAllItems()
         })
     }
+
     verifyUser (username, password, e) {
         e.preventDefault()
         let userInfo = {username: username, password: password}
@@ -66,6 +69,15 @@ class App extends React.Component {
             alert('please enter valid username and password')
         }
     }
+
+    updateSoldItem(itemID, userID, username) {
+        let soldItemInfo = {itemID: itemID, userID: userID, username: username}
+        axios.post('/updateSoldItem', soldItemInfo)
+        .then((data) => {
+            this.retrieveAllItems( )
+        })
+    }
+
     logout() {
         localStorage.removeItem('auth')
         this.setState({
@@ -95,7 +107,8 @@ class App extends React.Component {
                                     key={item._id} 
                                     item={item} 
                                     userInfo={this.state.userInfo}
-                                    submitNewBid={this.submitNewBid}   
+                                    submitNewBid={this.submitNewBid}
+                                    updateSoldItem={this.updateSoldItem} 
                                     />
                         }) : <div></div>}
                     </div>

@@ -7,6 +7,8 @@ const items = [
         starting_price: 10000,
         latest_bid_id: null,
         latest_bid: null,
+        soldTo: '',
+        latest_bidder_id: '',
         bids: []
     },
     {
@@ -16,6 +18,8 @@ const items = [
         starting_price: 700,
         latest_bid_id: null,
         latest_bid: null,
+        soldTo: '',
+        latest_bidder_id: '',
         bids: []
     },
     {
@@ -25,6 +29,8 @@ const items = [
         starting_price: 20,
         latest_bid_id: null,
         latest_bid: null,
+        soldTo: '',
+        latest_bidder_id: '',
         bids: []
     }
 ]

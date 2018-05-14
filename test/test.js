@@ -23,8 +23,7 @@ describe('DB Tests ', function() {
     describe('function that adds expiration time ',function() {
         it('should add a different time to each time', function(done) {
             addExpiryTimes()
-            if (( (new Date(dummyItems[1].expiringTime).getMinutes()) - (new Date(dummyItems[0].expiringTime).getMinutes())  ) 
-                === (timesToAdd[1].expiringTime -  timesToAdd[0].expiringTime)) {
+            if ( dummyItems[0].expiringTime !== dummyItems[1].expiringTime && dummyItems[1].expiringTime !== dummyItems[2].expiringTime){
                 done() 
             } else {
                 done('did not properly add the expiration times to each item')
@@ -52,7 +51,6 @@ describe('DB Tests ', function() {
         })
         it ('should retrieve all items in items collection ', function(done) {
             return retrieveAllItems(function(data) {
-                console.log('data')
                 if(data.length === dummyItems.length) {
                     done()
                 } else {
@@ -62,7 +60,6 @@ describe('DB Tests ', function() {
         })
         it ('should retrieve all users in users collection ', function(done) {
             return retrieveAllUsers(function(data) {
-                console.log('data')
                 if(data.length === dummyUsers.length) {
                     done()
                 } else {

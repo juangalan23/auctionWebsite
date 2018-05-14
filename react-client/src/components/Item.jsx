@@ -58,6 +58,10 @@ class ItemCard extends React.Component {
         if (new Date(this.state.expiringTime).getTime() -  new Date().getTime() < 0 ) {
             this.setState({
                 timeLeft: false
+            },()=>{
+                if (this.props.item.soldTo === '' && this.props.item.latest_bidder ) {
+                    this.props.updateSoldItem(this.props.item._id, this.props.item.latest_bidder_id, this.props.item.latest_bidder)
+                }
             })
         } else {
             this.setState({
@@ -129,7 +133,7 @@ class ItemCard extends React.Component {
                     </label>
                     <input type="submit" value="Submit" />
                 </form>
-                : item.bids ?
+                : item.latest_bid ?
                     <Typography variant='title'>
                     {`The winner of this item is ${item.latest_bidder}`}
                     </Typography>  : 

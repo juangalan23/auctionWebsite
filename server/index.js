@@ -30,6 +30,13 @@ app.post('/verifyUser', (req, res)=> {
     })
 })
 
+app.post('/updateSoldItem', (req, res)=> {
+    let soldItemInfo = req.body;
+    mongoDB.updateSoldItem(soldItemInfo, (data) => {
+        res.send(data);
+    })
+})
+
 const port = 3000
 app.listen(port, function() {
     console.log('Listening on ' + port)
