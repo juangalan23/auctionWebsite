@@ -1,10 +1,18 @@
-const db = require('../db/index.js');
 
 const items = [
     {
-        name: 'macbook',
-        image_url: '',
-        owner_id: 1,
+        name: 'Ducati',
+        image_url: 'https://images.freeimages.com/images/large-previews/231/ducati-monster-1516393.jpg',
+        expiringTime: 'calculating',
+        starting_price: 10000,
+        latest_bid_id: null,
+        latest_bid: null,
+        bids: []
+    },
+    {
+        name: 'laptop',
+        image_url: 'https://images.freeimages.com/images/large-previews/534/notebook-1-1240511.jpg',
+        expiringTime: 'calculating',
         starting_price: 700,
         latest_bid_id: null,
         latest_bid: null,
@@ -12,8 +20,8 @@ const items = [
     },
     {
         name: 'pencil sharpener',
-        image_url: '',
-        owner_id: 2,
+        image_url: 'https://images.freeimages.com/images/large-previews/8af/pencil-sharpener-1506560.jpg',
+        expiringTime:  'calculating',
         starting_price: 20,
         latest_bid_id: null,
         latest_bid: null,
@@ -21,4 +29,5 @@ const items = [
     }
 ]
 
-db.insertMultipleItemsToDB(items);
+
+module.exports = items

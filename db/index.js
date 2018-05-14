@@ -12,55 +12,117 @@ db.once('open', ()=> {
 })
 
 const bidSchema = mongoose.Schema({
-    user_id: Number,
+    user_id: String,
     user_name: String,
     bid_price: Number,
-    item_id: Number
+    item_id: String
 });
 
 const itemSchema = mongoose.Schema({
     name: String,
     image_url: String,
-    owner_id: Number,
+    expiringTime: String,
     starting_price: Number,
-    latest_bid_id: Number,
+    latest_bid_id: String,
     latest_bid: Number,
+    latest_bidder: String,
     bids: [bidSchema]
   });
 
-const itemModel = mongoose.model('Item', itemSchema);
+const userSchema = mongoose.Schema({
+    name: String,
+    password: String
+});
+
+const Item = mongoose.model('Item', itemSchema, 'items');
+const User = mongoose.model('User', userSchema, 'users');
+const Bid = mongoose.model('Bid', bidSchema);
 
 const insertItemToDB = (item) => {
-    let newItem = new itemModel(item)
+    let newItem = new Item(item)
     newItem.save( (err, newItem)=>{} )
 }
 
-const insertMultipleItemsToDB = (objectArray) => {
-    console.log('object array ',objectArray)
-    if (objectArray.length) {
-        // let insertArray = [];
-        // objectArray.forEach(element => {
-        //     let newItem = new itemModel();
-        //     newItem.name = element.name;
-        //     newItem.image_url = element.image_url;
-        //     newItem.owner_id = element.owner_id;
-        //     newItem.starting_price = element.starting_price;
-        //     newItem.latest_bid_id = element.latest_bid_id;
-        //     newItem.latest_bid = element.latest_bid;
-        //     newItem.bids = element.bids;
-        //     insertArray.push(newItem);
-        // });
-        // console.log('cleaned data array ', insertArray);
-        return itemModel.create(objectArray, (err, itemModel)=> {
-            if (err){
-                console.log('err in inserting item to mongodb ', err);
+const insertMultipleItemsToDB =  (objectArray, callback) => {
+    if (objectArray.length && callback) {
+        return Item.insertMany(objectArray, function(err, data){
+            if (err ) {
+                console.log('error ', err)
+            } else {
+                callback(data)
             }
         })
-        
     }
+}
+const insertMultipleUsersToDB =  (objectArray, callback) => {
+    if (objectArray.length && callback) {
+        return User.insertMany(objectArray, (err, data)=>{
+            if (err ) {
+                console.log('error ', err)
+            } else {
+                callback(data)
+            }
+        })
+    }
+}
+
+const retrieveAllItems = (callback) => {
+    Item.find( {}, (err, data) =>{
+        if(err) {
+            console.log('error retrieving all items', err) 
+        } else {
+            callback(data);
+        }
+    })
+}
+
+const retrieveAllUsers = (callback) => {
+    User.find( {}, (err, data)=> {
+        if(err) {
+            console.log('error retrieving all items', err) 
+        } else {
+            callback(data);
+        }
+    })
+}
+
+const submitNewBid =  (bidData, callback) => {
+    let newBid = new Bid(bidData);
+    Item.findById(newBid.item_id,(err, item)=> {
+        item.latest_bid_id = newBid._id;
+        item.latest_bid = newBid.bid_price;
+        item.latest_bidder = newBid.user_name;
+        item.bids.push(newBid)
+        item.save((err, updatedItem)=> {
+            if(err) {
+                console.log('err in updating item ', err)
+            } else {
+                callback(updatedItem)
+            }
+        })
+    })
+}
+
+const checkUser = (userInfo, callback) => {
+    User.findOne({'name': userInfo.username, 'password': userInfo.password},(err, res)=>{
+        if(err) console.log('err finding user')
+        else {
+            if(res) {
+                userInfo._id = res._id
+                callback(userInfo)
+            } else {
+                callback(null)
+            }
+        }
+    })
 }
 
 module.exports = {
     insertItemToDB,
-    insertMultipleItemsToDB
+    insertMultipleItemsToDB,
+    insertMultipleUsersToDB,
+    retrieveAllItems,
+    retrieveAllUsers,
+    submitNewBid,
+    checkUser
 };

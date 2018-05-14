@@ -4,16 +4,6 @@ import { render } from 'react-dom'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import App from './App.jsx';
 
-// const theme = createMuiTheme({
-//     palette: {
-//       primary: lightgreen,
-//       secondary: blue,
-//     },
-//     status: {
-//       danger: 'orange',
-//     },
-//   });
-
 
 const StyledApp = ()=> {
   return (

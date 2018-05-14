@@ -1,8 +1,7 @@
 const express = require('express');
 const path = require('path')
 const bodyParser = require('body-parser');
-const MongoClient = require('../db/Index.js');
-
+const mongoDB = require('../db/index.js');
 
 const app = express()
 
@@ -11,19 +10,25 @@ app.use(bodyParser.json())
 
 /* ****** ROUTES ****** */
 
-//get all items from the list 
-    // TBD: do we want to sort in the front or in the back-end,
-    // should this be handled in the main get request
+app.get('/allItems', function(req, res) {
+    mongoDB.retrieveAllItems((data)=>{
+        res.send(data)
+    })
+})
 
+app.post('/newBid', function(req, res) {
+    let bidBody = req.body;
+    mongoDB.submitNewBid(bidBody, (data)=> {
+        res.send(data)
+    })
+})
 
-// post new bid to an item
-    // should take in item id
-    // new bid amount 
-    // on the front-end, we should only allow numbers that are bigger than the highest bid
-    
-
-
-
+app.post('/verifyUser', (req, res)=> {
+    let userInfo = req.body;
+    mongoDB.checkUser(userInfo, (data)=> {
+        res.send(data)
+    })
+})
 
 const port = 3000
 app.listen(port, function() {
